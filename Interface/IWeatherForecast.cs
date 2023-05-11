@@ -6,5 +6,6 @@ namespace RapidApi_Weather.Interface
     {
         public Task<List<FindPlaces>> getFindPlaces(string text);
         public Task<Current> getCurrentWeather(string city, string country);
+        public Task<DailyWeather> postDailyWeather(string city, string country);
     }
 }

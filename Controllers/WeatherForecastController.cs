@@ -31,6 +31,13 @@ namespace RapidApi_Weather.Controllers
             return Ok(await _weather.getCurrentWeather(city, country));
         }
 
+        [HttpPost]
+        [Route("Get_Daily_Weather")]
+        public async Task<ActionResult<IEnumerable<FindPlaces>>> postDailyWeather(string city, string country)
+        {
+            return Ok(await _weather.postDailyWeather(city,country));
+        }
+
 
     }
 }
