@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using RapidApi_Weather.Interface;
 using RapidApi_Weather.Models;
+using System.Diagnostics.Metrics;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace RapidApi_Weather.Controllers
@@ -36,6 +37,13 @@ namespace RapidApi_Weather.Controllers
         public async Task<ActionResult<IEnumerable<FindPlaces>>> postDailyWeather(string city, string country)
         {
             return Ok(await _weather.postDailyWeather(city,country));
+        }
+
+        [HttpPost]
+        [Route("Get_Astro_Data")]
+        public async Task<ActionResult<IEnumerable<Location>>> getAstroData(string city, string country)
+        {
+            return Ok(await _weather.getAstroData(city,country));
         }
 
 

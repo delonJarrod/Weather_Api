@@ -23,7 +23,7 @@ namespace RapidApi_Weather.Logic
         public async Task<Current> getCurrentWeather(string city, string country)
         {
             List<FindPlaces> FindPlaces = await getFindPlaces(city);
-            FindPlaces place = FindPlaces.Where(x => x.country.ToLower().Trim() == country.ToLower().Trim()).FirstOrDefault();
+            FindPlaces place = FindPlaces.Where(x => x.country.ToLower().Replace(" ", "") == country.ToLower().Replace(" ", "")).FirstOrDefault();
             var response = await GetMethod("https://ai-weather-by-meteosource.p.rapidapi.com/current?place_id=" + place.place_id);
             Current Current = JsonConvert.DeserializeObject<Current>(response);
             return Current;
@@ -38,6 +38,15 @@ namespace RapidApi_Weather.Logic
             var response = await GetMethod("https://ai-weather-by-meteosource.p.rapidapi.com/daily?place_id=" + place.place_id);
             DailyWeather DailyWeather = JsonConvert.DeserializeObject<DailyWeather>(response);
             return DailyWeather;
+        }
+        
+        public async Task<Location> getAstroData(string city, string country)
+        {
+            List<FindPlaces> FindPlaces = await getFindPlaces(city);
+            FindPlaces place = FindPlaces.Where(x => x.country.ToLower().Replace(" ", "") == country.ToLower().Replace(" ", "")).FirstOrDefault();
+            var response = await GetMethod("https://ai-weather-by-meteosource.p.rapidapi.com/astro?place_id=" + place.place_id);
+            Location astroData = JsonConvert.DeserializeObject<Location>(response);
+            return astroData;
         }
 
        
