@@ -46,6 +46,5 @@ namespace RapidApi_Weather.Controllers
             return Ok(await _weather.getAstroData(city,country));
         }
 
-
     }
 }

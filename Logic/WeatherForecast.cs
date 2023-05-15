@@ -46,10 +46,33 @@ namespace RapidApi_Weather.Logic
             FindPlaces place = FindPlaces.Where(x => x.country.ToLower().Replace(" ", "") == country.ToLower().Replace(" ", "")).FirstOrDefault();
             var response = await GetMethod("https://ai-weather-by-meteosource.p.rapidapi.com/astro?place_id=" + place.place_id);
             Location astroData = JsonConvert.DeserializeObject<Location>(response);
+
+
+            DateTime sunStartDate, sunEndDate, nightStartDate, nightEndDate;
+
+            foreach (var item in astroData?.astro?.data ?? Enumerable.Empty<AstroData>())
+            {
+                // Check for null values before parsing dates
+                if (DateTime.TryParse(item.sun?.rise, out  sunStartDate) && DateTime.TryParse(item.sun?.set, out  sunEndDate)
+                    && DateTime.TryParse(item.moon?.rise, out  nightStartDate) && DateTime.TryParse(item.moon?.set, out  nightEndDate))
+                {
+                    var sunhours = Math.Round((sunEndDate - sunStartDate).TotalHours, 2);
+                    var nighthours = Math.Round((nightEndDate - nightStartDate).TotalHours, 2);
+
+                    item.hours_Of_Sun_Time = sunhours.ToString() + " Hours";
+                    item.hours_Of_Night_Time = nighthours.ToString() + " Hours";
+                }
+                else
+                {
+                    // Handle null or invalid values
+                    item.hours_Of_Sun_Time = "N/A";
+                    item.hours_Of_Night_Time = "N/A";
+                }
+            }
             return astroData;
         }
 
-       
+
         public async Task<string> GetMethod(string url)
         {
             // Getting the weather data

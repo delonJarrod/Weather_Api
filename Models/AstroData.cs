@@ -20,6 +20,8 @@
     public class AstroData
     {
         public string day { get; set; }
+        public string? hours_Of_Sun_Time{ get; set; }
+        public string? hours_Of_Night_Time { get; set; }
         public Sun sun { get; set; }
         public Moon moon { get; set; }
     }
